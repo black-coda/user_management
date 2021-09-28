@@ -4,6 +4,7 @@ from django.urls.conf import include
 from . import views
 
 urlpatterns = [
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('register/', views.signup_view, name='signup'),
     path("accounts/", include('django.contrib.auth.urls')),
+    #path('captcha/',) #solo continue here
 ]
