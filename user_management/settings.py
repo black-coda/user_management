@@ -132,3 +132,7 @@ LOGOUT_REDIRECT_URL = 'dashboard'
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 9000
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+PASSWORD_RESET_TIMEOUT_DAYS = 300
