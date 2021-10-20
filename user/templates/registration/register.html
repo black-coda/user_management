@@ -7,8 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    Naso
+    <form>
+        {% csrf_token %}
 
-    {{form.as_p}}
+        {{form.as_p}}
+
+        <button type = 'submit' > Submit </button>
+    </form>
+
+    
 </body>
 </html>

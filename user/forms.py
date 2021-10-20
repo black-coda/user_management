@@ -8,5 +8,4 @@ class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=150, help_text='Email')
     class Meta:
         model = User
-        fields = ('email','first_name', 'last_name',
-         'username', 'password1', 'password2',)
+        fields = ('email','first_name', 'last_name','username', 'password1', 'password2',)

@@ -26,41 +26,26 @@ def signup_view(request):
 
 
 def new_sign_up_view(request):
-    form = SignUpForm(request.POST)
-    if form.is_valid():
-        user = form.save()
-        user.refresh_from_db()
-        user.profile.first_name = form.cleaned_data.get('firstname')
-        user.profile.last_name = form.cleaned_data.get('lastname')
-        user.profile.email = form.cleaned_data.get('email')
+    form = SignUpForm()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db() #load profile instance created by the user
+            user.profile.first_name = form.cleaned_data.get('firstname')
+            user.profile.last_name = form.cleaned_data.get('lastname')
+            user.profile.email = form.cleaned_data.get('email')
 
-        # user cant login until link confirmed
+            user.save()
 
-        user.is_active = False
-        user.save()
-        current_site = get_current_site(request)
-        subject = 'Please activate your account'
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
 
-        #load a template like *get_template*
-
-        message = render_to_string('registration/activation_request.html',
-            {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                # method will generate a hash value with user related data
-                'token': account_activation_token.make_token(user),
-            }
-        )
-        
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password1')
-
-        user = authenticate(username = username, password = password)
-        login(request, user)
-        return redirect('dashboard')
-    else:
-        SignUpForm()
+            user = authenticate(username = username, password = password)
+            login(request, user)
+            return redirect('dashboard')
+        else:
+            form = SignUpForm()
 
     return render(request, 'registration/register.html', {'form':form})
     
